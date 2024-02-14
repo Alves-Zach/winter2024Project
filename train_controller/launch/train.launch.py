@@ -26,16 +26,17 @@ def generate_launch_description():
              ),
         
         # Interbotix node
-        IncludeLaunchDescription(launch_description_source="/home/alves/ws/interbotix/install/share/interbotix_xsarm_moveit/launch/xsarm_moveit.launch.py",
-                                 launch_arguments={
-                                    'robot_model': 'px100',
-                                    'hardware_type': 'fake'
-                                 }.items(),
-                                 condition=EqualsSubstitution(LaunchConfiguration("robot"), "sim")),
-        IncludeLaunchDescription(launch_description_source="/home/alves/ws/interbotix/install/share/interbotix_xsarm_moveit/launch/xsarm_moveit.launch.py",
+        # IncludeLaunchDescription(launch_description_source="/home/alves/ws/interbotix/install/share/interbotix_xsarm_control/launch/xsarm_control.launch.py",
+        #                          launch_arguments={
+        #                             'robot_model': 'px100',
+        #                             'hardware_type': 'fake'
+        #                          }.items(),
+        #                          condition=IfCondition(EqualsSubstitution(LaunchConfiguration("robot"), "sim"))),
+
+        IncludeLaunchDescription(launch_description_source="/home/alves/ws/interbotix/install/share/interbotix_xsarm_control/launch/xsarm_control.launch.py",
                                  launch_arguments={
                                     'robot_model': 'px100',
                                     'hardware_type': 'actual'
                                  }.items(),
-                                 condition=EqualsSubstitution(LaunchConfiguration("robot"), "real")),  
+                                 condition=IfCondition(EqualsSubstitution(LaunchConfiguration("robot"), "real"))),  
     ])

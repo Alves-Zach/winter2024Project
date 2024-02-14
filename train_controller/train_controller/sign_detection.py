@@ -47,13 +47,15 @@ class SignDetector(Node):
                     
                     detection_count = r.boxes.shape[0]
 
-                    j = 0
+                    # If results is empty publish an empty message
+                    if (detection_count == 0):
+                        self.signMessage.data = ""
+                        self.signPub.publish(self.signMessage)
+
                     for i in range(detection_count):
                         cls = int(r.boxes.cls[i].item())
                         self.signMessage.data = str(r.names[cls])
-                        self.get_logger().debug("%i: %s" %(j, self.signMessage.data))
                         self.signPub.publish(self.signMessage)
-                        j += 1
                     
                 # Display the annotated frame
                 cv2.imshow("YOLOv8 Inference", annotated_frame)
