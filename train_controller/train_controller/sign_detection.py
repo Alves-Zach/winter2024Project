@@ -19,15 +19,15 @@ class SignDetector(Node):
         model = YOLO('/home/alves/Documents/Classes/Winter24/Project/code/MLPipeline/yolo/yolov7/runs/detect/train13/weights/best.pt')
 
         # Single stream with batch-size 1 inference
-        # source = "udp://127.0.1.1:12345"  # RTSP, RTMP, TCP or IP streaming address
-        source = 0
+        source = "udp://127.0.1.1:12345"  # RTSP, RTMP, TCP or IP streaming address
+        # source = 0
 
         # Run inference on the source
         model.predict(source, stream=True, verbose=False)  # generator of Results objects
 
         # Open the video file
-        # video_path = "udp://127.0.1.1:12345"
-        video_path = 0
+        video_path = "udp://127.0.1.1:12345"
+        # video_path = 0
         cap = cv2.VideoCapture(video_path)
 
         # Loop through the video frames

@@ -21,8 +21,8 @@ class controller(Node):
         self.gripperPub = self.create_publisher(JointSingleCommand, '/px100/commands/joint_single', 10)
 
         # List of joint positions for the commanded velocities
-        self.cmdDict = {'0%': [np.deg2rad(7), np.deg2rad(-8), np.deg2rad(45), np.deg2rad(-33)],
-                        '20%': [np.deg2rad(9), np.deg2rad(8), np.deg2rad(27), np.deg2rad(-39)]}
+        self.cmdDict = {'0%': [np.deg2rad(8), np.deg2rad(12), np.deg2rad(76), np.deg2rad(-69)],
+                        '20%': [np.deg2rad(20), np.deg2rad(38), np.deg2rad(30), np.deg2rad(-55)]}
 
         
     def signCallback(self, message):
