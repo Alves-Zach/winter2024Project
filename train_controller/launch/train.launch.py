@@ -13,11 +13,15 @@ def generate_launch_description():
         DeclareLaunchArgument(name="robot", default_value="real",
                               description="Selects whether the robot will be simulated or real",
                               choices=["real", "sim"]),
+        DeclareLaunchArgument(name="launch_camera", default_value="true",
+                              description="Selects whether the sign_detection node will be launched",
+                              choices=["true", "false"]),
         
         # Nodes to be launched
         # Sign detection
         Node(package="train_controller", executable="sign_detection",
-             on_exit=actions.Shutdown()
+             on_exit=actions.Shutdown(),
+             condition=IfCondition(EqualsSubstitution(LaunchConfiguration("launch_camera"), "true"))
              ),
         
         # Train controller
