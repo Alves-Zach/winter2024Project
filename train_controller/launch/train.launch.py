@@ -16,6 +16,9 @@ def generate_launch_description():
         DeclareLaunchArgument(name="launch_camera", default_value="true",
                               description="Selects whether the sign_detection node will be launched",
                               choices=["true", "false"]),
+        DeclareLaunchArgument(name="launch_controller", default_value="true",
+                              description="Selects whether the controller node will be launched",
+                              choices=["true", "false"]),
         
         # Nodes to be launched
         # Sign detection
@@ -26,7 +29,8 @@ def generate_launch_description():
         
         # Train controller
         Node(package="train_controller", executable="controller",
-             on_exit=actions.Shutdown()
+             on_exit=actions.Shutdown(),
+             condition=IfCondition(EqualsSubstitution(LaunchConfiguration("launch_controller"), "true"))
              ),
         
         # Interbotix node

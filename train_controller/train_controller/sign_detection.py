@@ -16,18 +16,18 @@ class SignDetector(Node):
         
         # Running yolo stuff
         # Load a pretrained YOLOv8n model
-        model = YOLO('/home/alves/Documents/Classes/Winter24/Project/code/MLPipeline/yolo/yolov7/runs/detect/train10/weights/best.pt')
+        model = YOLO('/home/alves/Documents/Classes/Winter24/Project/code/MLPipeline/yolo/yolov7/runs/obb/train2/weights/best.pt')
 
         # Single stream with batch-size 1 inference
-        # source = "udp://127.0.1.1:12345"  # RTSP, RTMP, TCP or IP streaming address
-        source = 0
+        source = "udp://127.0.1.1:12345"  # RTSP, RTMP, TCP or IP streaming address
+        # source = 0
 
         # Run inference on the source
         model.predict(source, stream=True, verbose=False)  # generator of Results objects
 
         # Open the video file
-        # video_path = "udp://127.0.1.1:12345"
-        video_path = 0
+        video_path = "udp://127.0.1.1:12345"
+        # video_path = 0
         cap = cv2.VideoCapture(video_path)
 
         # Loop through the video frames
@@ -45,7 +45,7 @@ class SignDetector(Node):
                 # Print out which signs are seen
                 for r in results:
                     
-                    detection_count = r.boxes.shape[0]
+                    detection_count = r.obb.shape[0]
 
                     # If results is empty publish an empty message
                     if (detection_count == 0):
@@ -53,9 +53,16 @@ class SignDetector(Node):
                         self.signPub.publish(self.signMessage)
 
                     for i in range(detection_count):
-                        cls = int(r.boxes.cls[i].item())
-                        self.signMessage.data = str(r.names[cls])
-                        self.signPub.publish(self.signMessage)
+                        cls = int(r.obb.cls[i].item())
+                        if (str(r.names[cls]) == "Slow"):
+                            self.signMessage.data = "20"
+                            self.signPub.publish(self.signMessage)
+                        if (str(r.names[cls]) == "Fast"):
+                            self.signMessage.data = "40"
+                            self.signPub.publish(self.signMessage)
+                        else:
+                            self.signMessage.data = str(r.names[cls])
+                            self.signPub.publish(self.signMessage)
                     
                 # Display the annotated frame
                 cv2.imshow("YOLOv8 Inference", annotated_frame)
