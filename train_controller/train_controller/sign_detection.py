@@ -16,7 +16,7 @@ class SignDetector(Node):
         
         # Running yolo stuff
         # Load a pretrained YOLOv8n model
-        model = YOLO('/home/alves/Documents/Classes/Winter24/Project/code/MLPipeline/yolo/yolov7/runs/obb/train2/weights/best.pt')
+        model = YOLO('/home/alves/Documents/Classes/Winter24/Project/code/MLPipeline/yolo/yolov7/runs/obb/train10/weights/best.pt')
 
         # Single stream with batch-size 1 inference
         source = "udp://127.0.1.1:12345"  # RTSP, RTMP, TCP or IP streaming address
@@ -60,7 +60,7 @@ class SignDetector(Node):
                         if (str(r.names[cls]) == "Fast"):
                             self.signMessage.data = "40"
                             self.signPub.publish(self.signMessage)
-                        else:
+                        if (str(r.names[cls]) != "Fast" and str(r.names[cls]) != "Slow"):
                             self.signMessage.data = str(r.names[cls])
                             self.signPub.publish(self.signMessage)
                     
